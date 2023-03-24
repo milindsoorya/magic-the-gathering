@@ -4,8 +4,8 @@ magic_the_gathering:
     dev:
       type: bigquery
       method: service-account
-      keyfile: /home/vincenzo/.gc/dtc-mtg-final-project.json # Exchange with path to your Google Cloud credentials, created under step 1
-      project: dtc-mtg-final-project
+      keyfile: /Users/milindsoorya/.gc/magic-the-gathering-381611-5380f0468b17.json # Exchange with path to your Google Cloud credentials, created under step 1
+      project: magic-the-gathering-381611
       dataset: mtg_card_data_dbt
       threads: 1
       timeout_seconds: 300

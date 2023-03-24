@@ -16,3 +16,6 @@ api_to_bq_orchestration-deployment.yaml
 # large files
 **.parquet
 **.parquet.snappy
+
+# env
+.env

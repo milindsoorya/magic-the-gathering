@@ -2,7 +2,7 @@ version: 2
 
 sources:
     - name: staging
-      database: dtc-mtg-final-project
+      database: magic-the-gathering-381611
       schema: mtg_card_data_raw
 
       tables:

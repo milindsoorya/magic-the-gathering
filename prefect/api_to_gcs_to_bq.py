@@ -30,12 +30,16 @@ def write_to_gcs(
 ) -> None:
     """Writes the dataframe to a GCS bucket as a parquet file"""
     df = df.astype(str)
+    # try:
     gcp_cloud.upload_from_dataframe(
         df=df,
         to_path=f"pq/{dataset}_{update}.parquet",
         serialization_format="parquet_snappy",
     )
     return
+    # except Exception as e:
+    #     print(f"[ERROR] {e}.")
+    
 
 
 @task(log_prints=True, name="Get parquet from Google Cloud Storage")
@@ -120,7 +124,7 @@ def write_to_bq(df: pd.DataFrame) -> None:
 
     df.to_gbq(
         destination_table="mtg_card_data_raw.default_cards",
-        project_id="dtc-mtg-final-project",
+        project_id="magic-the-gathering-381611",
         credentials=gcp_credentials_block.get_credentials_from_service_account(),
         chunksize=10000,
         if_exists="append",
@@ -133,12 +137,12 @@ def write_to_bq(df: pd.DataFrame) -> None:
 def trigger_dbt_flow() -> object:
     """Triggers the dbt dependency and build commands"""
 
-    dbt_cli_profile = DbtCliProfile.load("mtg-dbt-cli-profile")
+    dbt_cli_profile = DbtCliProfile.load("mtg-dbt-cli-profile").get_profile()
 
     with DbtCoreOperation(
         commands=["dbt deps", "dbt build --var 'is_test_run: false'"],
-        project_dir="~/magic-the-gathering/dbt/",
-        profiles_dir="~/magic-the-gathering/dbt/",
+        project_dir="/Users/milindsoorya/Desktop/magic-the-gathering/dbt/",
+        profiles_dir="/Users/milindsoorya/Desktop/magic-the-gathering/dbt/",
         # dbt_cli_profile=dbt_cli_profile, # comment out if dbt asks for a dbt_cli_profile
     ) as dbt_operation:
         dbt_process = dbt_operation.trigger()
